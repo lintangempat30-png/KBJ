@@ -5,10 +5,12 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <application
-        android:theme="@style/AppTheme"
-        android:label="KBJ"
-        android:usesCleartextTraffic="false"
-        android:allowBackup="true">
+            android:theme="@style/AppTheme"
+            android:label="KBJ"
+            android:icon="@mipmap/ic_launcher"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:usesCleartextTraffic="false"
+            android:allowBackup="true">
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
