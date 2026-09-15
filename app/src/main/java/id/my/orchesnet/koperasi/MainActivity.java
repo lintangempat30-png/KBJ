@@ -1,6 +1,11 @@
 package id.my.orchesnet.koperasi;
 
 import android.Manifest;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.media.AudioAttributes;
+import android.os.Build;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -29,11 +34,98 @@ public class MainActivity extends AppCompatActivity {
 
     private WebView webView;
     private SwipeRefreshLayout refresh;
+	private static final String CHANNEL_ID = "pengingat_angsuran";
+	
+	private void buatNotificationChannel() {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+        Uri soundUri = Uri.parse(
+                "android.resource://" + getPackageName() + "/" + R.raw.bayar_angsuran
+        );
+
+        AudioAttributes audioAttributes =
+                new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build();
+
+        NotificationChannel channel =
+                new NotificationChannel(
+                        CHANNEL_ID,
+                        "Pengingat Angsuran",
+                        NotificationManager.IMPORTANCE_HIGH
+                );
+
+        channel.setDescription(
+                "Notifikasi pengingat pembayaran angsuran KBJ"
+        );
+
+        channel.setSound(soundUri, audioAttributes);
+
+        NotificationManager notificationManager =
+                getSystemService(NotificationManager.class);
+
+        notificationManager.createNotificationChannel(channel);
+    }
+}
+
+private void kirimNotifikasiTes() {
+
+    NotificationManager notificationManager =
+            getSystemService(NotificationManager.class);
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+        if (checkSelfPermission(
+                Manifest.permission.POST_NOTIFICATIONS
+        ) != PackageManager.PERMISSION_GRANTED) {
+
+            requestPermissions(
+                    new String[]{
+                            Manifest.permission.POST_NOTIFICATIONS
+                    },
+                    2001
+            );
+
+            return;
+        }
+    }
+
+    Uri soundUri = Uri.parse(
+            "android.resource://" + getPackageName()
+                    + "/" + R.raw.bayar_angsuran
+    );
+
+    Notification.Builder builder;
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+        builder = new Notification.Builder(this, CHANNEL_ID);
+
+    } else {
+
+        builder = new Notification.Builder(this)
+                .setSound(soundUri);
+    }
+
+    builder
+            .setSmallIcon(R.mipmap.ic_launcher)
+            .setContentTitle("Pengingat Angsuran")
+            .setContentText(
+                    "Ini adalah notifikasi percobaan KBJ."
+            )
+            .setPriority(Notification.PRIORITY_HIGH)
+            .setAutoCancel(true);
+
+    notificationManager.notify(1001, builder.build());
+}
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        buatNotificationChannel();
+        kirimNotifikasiTes();
 
         refresh = findViewById(R.id.refresh);
         webView = findViewById(R.id.webview);
@@ -137,6 +229,27 @@ public class MainActivity extends AppCompatActivity {
 
         webView.loadUrl(URL);
     }
+	
+	@Override
+public void onRequestPermissionsResult(
+        int requestCode,
+        String[] permissions,
+        int[] grantResults
+) {
+    super.onRequestPermissionsResult(
+            requestCode,
+            permissions,
+            grantResults
+    );
+
+    if (requestCode == 2001) {
+        if (grantResults.length > 0 &&
+                grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+            kirimNotifikasiTes();
+        }
+    }
+}
 
     /*
      * Jembatan JavaScript -> Android
