@@ -4,14 +4,13 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 	<uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
-            android:theme="@style/AppTheme"
-            android:label="KBJ"
-            android:icon="@mipmap/ic_launcher"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:usesCleartextTraffic="false"
-            android:allowBackup="true">
+        android:theme="@style/AppTheme"
+        android:label="KBJ"
+        android:usesCleartextTraffic="false"
+        android:allowBackup="true">
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
@@ -21,5 +20,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+		<receiver
+            android:name=".BootReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+               <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+		<receiver
+            android:name=".PengingatReceiver"
+            android:exported="false" />
     </application>
 </manifest>
