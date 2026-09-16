@@ -35,7 +35,6 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     buatNotificationChannel();
-    PengingatScheduler.jadwalkan(this);
 
         refresh = findViewById(R.id.refresh);
         webView = findViewById(R.id.webview);
@@ -51,17 +50,30 @@ public class MainActivity extends AppCompatActivity {
         s.setAllowFileAccess(true);
 
         webView.setWebViewClient(new WebViewClient() {
-            @Override
-            public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
-                Uri uri = request.getUrl();
-                String host = uri.getHost();
-                if (host != null && (host.equals("orchesnet.my.id") || host.endsWith(".orchesnet.my.id"))) {
-                    return false;
-                }
-                startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                return true;
-            }
-        });
+
+    @Override
+    public void onPageFinished(WebView view, String url) {
+        super.onPageFinished(view, url);
+
+        PengingatScheduler.jadwalkan(MainActivity.this);
+    }
+
+    @Override
+    public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
+        Uri uri = request.getUrl();
+        String host = uri.getHost();
+
+        if (host != null &&
+                (host.equals("orchesnet.my.id") ||
+                 host.endsWith(".orchesnet.my.id"))) {
+
+            return false;
+        }
+
+        startActivity(new Intent(Intent.ACTION_VIEW, uri));
+        return true;
+    }
+});
 
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
