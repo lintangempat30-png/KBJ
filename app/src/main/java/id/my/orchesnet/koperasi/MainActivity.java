@@ -125,7 +125,6 @@ private void kirimNotifikasiTes() {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         buatNotificationChannel();
-        kirimNotifikasiTes();
 
         refresh = findViewById(R.id.refresh);
         webView = findViewById(R.id.webview);
