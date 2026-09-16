@@ -5,6 +5,10 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.media.AudioAttributes;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.GeolocationPermissions;
@@ -86,4 +90,42 @@ public class MainActivity extends AppCompatActivity {
         if (webView.canGoBack()) webView.goBack();
         else super.onBackPressed();
     }
+	private void buatNotificationChannel() {
+
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+        Uri soundUri = Uri.parse(
+                "android.resource://" + getPackageName() + "/" + R.raw.bayar_angsuran
+        );
+
+        AudioAttributes audioAttributes =
+                new AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_NOTIFICATION)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build();
+
+        NotificationChannel channel =
+                new NotificationChannel(
+                        "pengingat_angsuran",
+                        "Pengingat Angsuran",
+                        NotificationManager.IMPORTANCE_HIGH
+                );
+
+        channel.setDescription(
+                "Notifikasi pengingat pembayaran angsuran"
+        );
+
+        channel.setSound(
+                soundUri,
+                audioAttributes
+        );
+
+        NotificationManager manager =
+                getSystemService(NotificationManager.class);
+
+        if (manager != null) {
+            manager.createNotificationChannel(channel);
+        }
+    }
+}
 }
