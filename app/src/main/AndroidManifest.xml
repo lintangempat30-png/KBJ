@@ -9,6 +9,7 @@
     <application
         android:theme="@style/AppTheme"
         android:label="KBJ"
+		android:icon="@mipmap/ic_launcher"
         android:usesCleartextTraffic="false"
         android:allowBackup="true">
         <activity
