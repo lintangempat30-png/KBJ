@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     buatNotificationChannel();
-	buatNotificationChannel();
+	PengumumanRapat.cek(MainActivity.this);
 
         refresh = findViewById(R.id.refresh);
         webView = findViewById(R.id.webview);
