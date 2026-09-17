@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     buatNotificationChannel();
+	buatNotificationChannel();
 
         refresh = findViewById(R.id.refresh);
         webView = findViewById(R.id.webview);
@@ -51,13 +52,12 @@ public class MainActivity extends AppCompatActivity {
 
         webView.setWebViewClient(new WebViewClient() {
 
-    @Override
-    public void onPageFinished(WebView view, String url) {
-        super.onPageFinished(view, url);
+        @Override
+          public void onPageFinished(WebView view, String url) {
+          super.onPageFinished(view, url);
 
-        PengingatScheduler.jadwalkan(MainActivity.this);
-		PengumumanRapat.cek(MainActivity.this);
-    }
+          PengingatScheduler.jadwalkan(MainActivity.this);
+        }
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
