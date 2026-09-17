@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
         super.onPageFinished(view, url);
 
         PengingatScheduler.jadwalkan(MainActivity.this);
+		PengumumanRapat.cek(MainActivity.this);
     }
 
     @Override
@@ -138,6 +139,44 @@ public class MainActivity extends AppCompatActivity {
         if (manager != null) {
             manager.createNotificationChannel(channel);
         }
+		if (manager != null) {
+
+    Uri soundRapat =
+            Uri.parse(
+                    "android.resource://"
+                    + getPackageName()
+                    + "/"
+                    + R.raw.pertemuan
+            );
+
+    AudioAttributes audioRapat =
+            new AudioAttributes.Builder()
+                    .setUsage(
+                            AudioAttributes.USAGE_NOTIFICATION
+                    )
+                    .setContentType(
+                            AudioAttributes.CONTENT_TYPE_SONIFICATION
+                    )
+                    .build();
+
+    NotificationChannel channelRapat =
+            new NotificationChannel(
+                    "pengumuman_rapat",
+                    "Pengumuman Rapat",
+                    NotificationManager.IMPORTANCE_HIGH
+            );
+
+    channelRapat.setDescription(
+            "Notifikasi pengumuman jadwal rapat koperasi"
+    );
+
+    channelRapat.setSound(
+            soundRapat,
+            audioRapat
+    );
+
+    manager.createNotificationChannel(channelRapat);
+}
     }
 }
 }
