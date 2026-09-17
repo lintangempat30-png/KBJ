@@ -63,8 +63,7 @@ public class MainActivity extends AppCompatActivity {
         PengumumanRapat.cek(MainActivity.this);
     }
     }
-    }
-
+	
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
         Uri uri = request.getUrl();
