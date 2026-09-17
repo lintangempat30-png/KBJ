@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
     private static final int LOCATION_REQ = 1001;
     private WebView webView;
     private SwipeRefreshLayout refresh;
+	private boolean rapatSudahDicek = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     buatNotificationChannel();
-	PengumumanRapat.cek(MainActivity.this);
 
         refresh = findViewById(R.id.refresh);
         webView = findViewById(R.id.webview);
@@ -57,7 +57,13 @@ public class MainActivity extends AppCompatActivity {
           super.onPageFinished(view, url);
 
           PengingatScheduler.jadwalkan(MainActivity.this);
-        }
+		  
+		   if (!rapatSudahDicek) {
+        rapatSudahDicek = true;
+        PengumumanRapat.cek(MainActivity.this);
+    }
+    }
+    }
 
     @Override
     public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
